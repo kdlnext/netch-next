@@ -1,14 +1,17 @@
-# Netch
-Prebuilt binaries for Netch version 1
+﻿# netch-next
+Prebuilt binary attribution for netch-next releases.
+
+## Project
+https://github.com/kdlnext/netch-next
 
 ## aiodns
-https://github.com/netchx/netch
+https://github.com/kdlnext/netch-next
 
 ## Redirector
-https://github.com/netchx/netch
+https://github.com/kdlnext/netch-next
 
 ## RouteHelper
-https://github.com/netchx/netch
+https://github.com/kdlnext/netch-next
 
 ## ck-client
 https://github.com/cbeuw/Cloak

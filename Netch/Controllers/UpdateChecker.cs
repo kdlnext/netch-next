@@ -9,8 +9,8 @@ namespace Netch.Controllers;
 
 public static class UpdateChecker
 {
-    public const string Owner = @"NetchX";
-    public const string Repo = @"Netch";
+    public const string Owner = @"kdlnext";
+    public const string Repo = @"netch-next";
 
     public const string Name = @"Netch-Next";
     public const string Copyright = @"Copyright © 2019 - 2026";
@@ -43,6 +43,13 @@ public static class UpdateChecker
 
             var releases = JsonSerializer.Deserialize<List<Release>>(json)!;
             LatestRelease = GetLatestRelease(releases, isPreRelease);
+            if (LatestRelease == null)
+            {
+                Log.Information("Github releases not found");
+                NewVersionNotFound?.Invoke(null, EventArgs.Empty);
+                return;
+            }
+
             Log.Information("Github latest release: {Version}", LatestRelease.tag_name);
             if (VersionUtil.CompareVersion(LatestRelease.tag_name, Version) > 0)
             {
@@ -95,12 +102,12 @@ public static class UpdateChecker
         return sb.ToString();
     }
 
-    private static Release GetLatestRelease(IEnumerable<Release> releases, bool isPreRelease)
+    private static Release? GetLatestRelease(IEnumerable<Release> releases, bool isPreRelease)
     {
         if (!isPreRelease)
             releases = releases.Where(release => !release.prerelease);
 
         var ordered = releases.OrderByDescending(release => release.tag_name, new VersionUtil.VersionComparer());
-        return ordered.ElementAt(0);
+        return ordered.FirstOrDefault();
     }
 }
