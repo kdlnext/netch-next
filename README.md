@@ -1,6 +1,82 @@
 ﻿# Netch-Next
 
 [English](#english) | [中文](#中文)
+## English
+
+`Netch-Next` is a Windows proxy and traffic-routing client evolved from the original `Netch` project. The current branch uses `sing-box` as its primary core and focuses on modern multi-protocol node management, mode switching, subscription updates, and practical desktop usability.
+
+### Project Focus
+
+- A Windows desktop client for proxy management and traffic routing
+- Unified multi-protocol configuration generation and startup based on `sing-box`
+- Keeps the familiar Netch workflow around servers, modes, subscriptions, and launch control
+- Designed for local debugging, test builds, and packaged releases
+
+### Highlights
+
+- Uses `sing-box` as the main proxy core
+- Provides GUI-based management for servers, modes, and subscriptions
+- Separates debug/test layout from release packaging layout
+- Checks for new releases and opens the GitHub Release page directly
+- Includes local scripts for testing, release builds, and repository sync
+
+### Current Protocol Support
+
+The current codebase includes support for the following protocols and node types:
+
+- SOCKS5
+- SSH
+- Trojan
+- VMess
+- VLESS
+- TUIC
+- Hysteria2
+- WireGuard
+
+### Project Links
+
+- Repository: [https://github.com/kdlnext/netch-next](https://github.com/kdlnext/netch-next)
+- Telegram Channel: [https://t.me/netchnext](https://t.me/netchnext)
+- Original upstream project: [https://github.com/netchx/netch](https://github.com/netchx/netch)
+
+### Development and Debugging
+
+- Current application version: `2.0.2`
+- Target framework: `net8.0-windows`
+- Main test directory: `E:\Projects\netch\Netch\bin\Debug\`
+- Quick test launch: `启动测试版.bat`
+- Windows x64 release build: `编译release.bat`
+- Full release packaging flow with zip and release notes: `发布release.bat`
+
+### Release Packaging
+
+- The release script builds a Windows x64 client
+- The final archive is `Netch-Next.zip`
+- The zip file contains a `Netch-Next` folder with the full client payload
+- Release notes are generated from `更新日志.txt`
+
+### Update Behavior
+
+- The application only checks whether a newer GitHub Release exists
+- When a new version is found, the UI shows a label and a prompt
+- Clicking the prompt opens the latest release page directly instead of downloading and replacing files in the background
+
+### Repository Sync Scripts
+
+- `同步github.bat` is used for normal sync against the latest remote state
+- When the remote branch is ahead, the script prompts the user with common handling options before continuing
+- `强制推送github.bat` force-pushes the local state to overwrite the remote branch
+
+### Thanks
+
+This project continues from the original `Netch` project and remains deeply rooted in its upstream work.
+
+Special thanks to the original author and all upstream contributors whose work made this fork possible.
+
+Upstream project:
+[https://github.com/netchx/netch](https://github.com/netchx/netch)
+
+---
 
 ## 中文
 
@@ -77,79 +153,4 @@
 上游项目地址：
 [https://github.com/netchx/netch](https://github.com/netchx/netch)
 
----
 
-## English
-
-`Netch-Next` is a Windows proxy and traffic-routing client evolved from the original `Netch` project. The current branch uses `sing-box` as its primary core and focuses on modern multi-protocol node management, mode switching, subscription updates, and practical desktop usability.
-
-### Project Focus
-
-- A Windows desktop client for proxy management and traffic routing
-- Unified multi-protocol configuration generation and startup based on `sing-box`
-- Keeps the familiar Netch workflow around servers, modes, subscriptions, and launch control
-- Designed for local debugging, test builds, and packaged releases
-
-### Highlights
-
-- Uses `sing-box` as the main proxy core
-- Provides GUI-based management for servers, modes, and subscriptions
-- Separates debug/test layout from release packaging layout
-- Checks for new releases and opens the GitHub Release page directly
-- Includes local scripts for testing, release builds, and repository sync
-
-### Current Protocol Support
-
-The current codebase includes support for the following protocols and node types:
-
-- SOCKS5
-- SSH
-- Trojan
-- VMess
-- VLESS
-- TUIC
-- Hysteria2
-- WireGuard
-
-### Project Links
-
-- Repository: [https://github.com/kdlnext/netch-next](https://github.com/kdlnext/netch-next)
-- Telegram Channel: [https://t.me/netchnext](https://t.me/netchnext)
-- Original upstream project: [https://github.com/netchx/netch](https://github.com/netchx/netch)
-
-### Development and Debugging
-
-- Current application version: `2.0.2`
-- Target framework: `net8.0-windows`
-- Main test directory: `E:\Projects\netch\Netch\bin\Debug\`
-- Quick test launch: `启动测试版.bat`
-- Windows x64 release build: `编译release.bat`
-- Full release packaging flow with zip and release notes: `发布release.bat`
-
-### Release Packaging
-
-- The release script builds a Windows x64 client
-- The final archive is `Netch-Next.zip`
-- The zip file contains a `Netch-Next` folder with the full client payload
-- Release notes are generated from `更新日志.txt`
-
-### Update Behavior
-
-- The application only checks whether a newer GitHub Release exists
-- When a new version is found, the UI shows a label and a prompt
-- Clicking the prompt opens the latest release page directly instead of downloading and replacing files in the background
-
-### Repository Sync Scripts
-
-- `同步github.bat` is used for normal sync against the latest remote state
-- When the remote branch is ahead, the script prompts the user with common handling options before continuing
-- `强制推送github.bat` force-pushes the local state to overwrite the remote branch
-
-### Thanks
-
-This project continues from the original `Netch` project and remains deeply rooted in its upstream work.
-
-Special thanks to the original author and all upstream contributors whose work made this fork possible.
-
-Upstream project:
-[https://github.com/netchx/netch](https://github.com/netchx/netch)
