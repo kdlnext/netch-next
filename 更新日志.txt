@@ -1,6 +1,7 @@
 This release focuses on the migration and integration of Netch-Next to the sing-box core.
 
 Updates:
+- Updated application version to 2.0.2
 - Switched the main proxy core to sing-box
 - Improved multi-protocol node configuration generation and startup flow
 - Enhanced support for VLESS, VMess, Trojan, TUIC, Hysteria2, WireGuard, and related protocols
@@ -11,12 +12,17 @@ Updates:
 Improvements:
 - Better protocol compatibility and maintainability under the new architecture
 - Laid the groundwork for further improvements to subscription parsing, mode control, and release workflow
+- Simplified application update behavior to release detection and release page guidance only
+- Removed background download and in-place automatic update flow to make updating more predictable
+- Synchronized assembly version, file version, and informational version metadata to improve release artifact identification
+- Improved icon recognition consistency after building and publishing
 
 Special thanks to the original Netch author and all contributors.
 
 本次版本重点完成了 Netch-Next 向 sing-box 内核的更新与整合。
 
 更新内容：
+- 程序版本更新为 2.0.2
 - 核心代理内核切换并统一为 sing-box
 - 优化多协议节点的配置生成与启动流程
 - 完善 VLESS、VMess、Trojan、TUIC、Hysteria2、WireGuard 等协议支持
@@ -27,6 +33,9 @@ Special thanks to the original Netch author and all contributors.
 改进说明：
 - 提升新版架构下的协议兼容性与后续维护性
 - 为后续继续完善订阅解析、模式控制和发布流程打下基础
+- 将程序更新逻辑精简为仅检测 GitHub Release 并提示跳转发布页
+- 移除了后台下载、自动替换和自动重启的更新流程，使更新行为更直接、更稳定
+- 同步程序集版本、文件版本和说明版本，提升发布产物的识别一致性
+- 改善编译和发布后图标识别的稳定性
 
 感谢原始 Netch 项目作者及所有贡献者。
-

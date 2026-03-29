@@ -15,7 +15,7 @@ public static class UpdateChecker
     public const string Name = @"Netch-Next";
     public const string Copyright = @"Copyright © 2019 - 2026";
 
-    public const string AssemblyVersion = @"2.0.0";
+    public const string AssemblyVersion = @"2.0.2";
     private const string Suffix = @"";
 
     public static readonly string Version = $"{AssemblyVersion}{(string.IsNullOrEmpty(Suffix) ? "" : $"-{Suffix}")}";

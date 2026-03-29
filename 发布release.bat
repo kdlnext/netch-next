@@ -14,6 +14,9 @@ set "BIN_DIR=%PACKAGE_DIR%\bin"
 set "ZIP_PATH=%OUT_DIR%\Netch-Next.zip"
 set "CHANGELOG=%ROOT%更新日志.txt"
 set "RELEASE_DESC=%OUT_DIR%\release-description.md"
+set "VERSION_FILE=%ROOT%Netch\Controllers\UpdateChecker.cs"
+set "APP_VERSION="
+set "RELEASE_TIME="
 
 echo ==============================================
 echo Publishing Netch-Next Windows x64 release
@@ -37,6 +40,30 @@ if not exist "%CHANGELOG%" (
     echo [HINT] Create 更新日志.txt in the repository root, then rerun this script.
     exit /b 1
 )
+
+if not exist "%VERSION_FILE%" (
+    echo [ERROR] Missing version source file: %VERSION_FILE%
+    exit /b 1
+)
+
+for /f "usebackq delims=" %%I in (`powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "$content = Get-Content -Path '%VERSION_FILE%' -Raw -Encoding UTF8;" ^
+    "$match = [regex]::Match($content, 'AssemblyVersion\\s*=\\s*@\"([^\"]+)\"');" ^
+    "if ($match.Success) { $match.Groups[1].Value }"`) do (
+    set "APP_VERSION=%%I"
+)
+
+if "%APP_VERSION%"=="" (
+    set "APP_VERSION=unknown"
+)
+
+for /f "usebackq delims=" %%I in (`powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-Date -Format 'yyyy-MM-dd HH:mm:ss zzz'"`) do (
+    set "RELEASE_TIME=%%I"
+)
+
+echo Version: %APP_VERSION%
+echo Release Time: %RELEASE_TIME%
+echo ==============================================
 
 if exist "%OUT_DIR%" (
     echo [1/7] Cleaning previous release output...
@@ -118,6 +145,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "$changelog = Get-Content -Path '%CHANGELOG%' -Raw -Encoding UTF8;" ^
     "$lines = @();" ^
     "$lines += '# Netch-Next';" ^
+    "$lines += '';" ^
+    "$lines += 'Version: `%APP_VERSION%`';" ^
+    "$lines += 'Published at: `%RELEASE_TIME%`';" ^
     "$lines += '';" ^
     "$lines += 'Windows x64 release package: `Netch-Next.zip`';" ^
     "$lines += '';" ^

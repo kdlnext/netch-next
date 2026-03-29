@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Windows.Win32;
 using Windows.Win32.Foundation;
@@ -421,87 +420,9 @@ public partial class MainForm : Form
         Utils.Utils.Open($"https://github.com/{UpdateChecker.Owner}/{UpdateChecker.Repo}/releases");
     }
 
-    private async void NewVersionLabel_Click(object sender, EventArgs e)
+    private void NewVersionLabel_Click(object sender, EventArgs e)
     {
-        if (ModifierKeys == Keys.Control || !UpdateChecker.LatestRelease!.assets.Any())
-        {
-            Utils.Utils.Open(UpdateChecker.LatestVersionUrl!);
-            return;
-        }
-
-        if (MessageBoxX.Show(i18N.Translate($"Download and install now?\n\n{UpdateChecker.GetLatestReleaseContent()}"), confirm: true) !=
-            DialogResult.OK)
-            return;
-
-        NotifyTip(i18N.Translate("Start downloading new version"));
-        NewVersionLabel.Enabled = false;
-        NewVersionLabel.Text = "...";
-
-        try
-        {
-            var progress = new Progress<int>();
-            progress.ProgressChanged += (_, percentage) => { NewVersionLabel.Text = $"{percentage}%"; };
-
-            string downloadDirectory = Path.Combine(Global.NetchDir, "data");
-
-            var (updateFileName, sha256) = UpdateChecker.GetLatestUpdateFileNameAndHash();
-            var updateFileUrl = UpdateChecker.LatestRelease.assets[0].browser_download_url!;
-
-            var updateFileFullName = Path.Combine(downloadDirectory, updateFileName);
-            var updater = new Updater(updateFileFullName, Global.NetchDir);
-
-            var downloaded = false;
-            if (File.Exists(updateFileFullName))
-            {
-                var fileHash = await Utils.Utils.Sha256CheckSumAsync(updateFileFullName);
-                if (fileHash == sha256)
-                    downloaded = true;
-                else
-                    File.Delete(updateFileFullName);
-            }
-
-            if (!downloaded)
-            {
-                try
-                {
-                    await WebUtil.DownloadFileAsync(updateFileUrl, updateFileFullName, progress);
-                }
-                catch (Exception e1)
-                {
-                    Log.Warning(e1, "Download Update File Failed");
-                    throw new MessageException($"Download Update File Failed: {e1.Message}");
-                }
-
-                var fileHash = await Utils.Utils.Sha256CheckSumAsync(updateFileFullName);
-                if (fileHash != sha256)
-                    throw new MessageException(i18N.Translate("The downloaded file has the wrong hash"));
-            }
-
-            await StopAsync();
-            await Configuration.SaveAsync();
-
-            // Update
-            await Task.Run(updater.ApplyUpdate);
-
-            // release mutex, exit
-            Program.SingleInstance.Dispose();
-            Process.Start(Global.NetchExecutable);
-            Environment.Exit(0);
-        }
-        catch (MessageException exception)
-        {
-            NotifyTip(exception.Message, info: false);
-        }
-        catch (Exception exception)
-        {
-            Log.Error(exception, "Unhandled Update error");
-            NotifyTip(exception.Message, info: false);
-        }
-        finally
-        {
-            NewVersionLabel.Visible = false;
-            NewVersionLabel.Enabled = true;
-        }
+        OpenLatestReleasePage();
     }
 
     private void AboutToolStripButton_Click(object sender, EventArgs e)
@@ -1334,8 +1255,6 @@ public partial class MainForm : Form
         {
             UpdateChecker.NewVersionFound += OnUpdateCheckerOnNewVersionFound;
             await UpdateChecker.CheckAsync(Global.Settings.CheckBetaUpdate);
-            if (Flags.AlwaysShowNewVersionFound)
-                OnUpdateCheckerOnNewVersionFound(null!, null!);
         }
         finally
         {
@@ -1348,7 +1267,20 @@ public partial class MainForm : Form
             NewVersionLabel.Text = i18N.Translate("New version available");
             NewVersionLabel.Enabled = true;
             NewVersionLabel.Visible = true;
+
+            if (MessageBoxX.Show($"{i18N.Translate(@"New version available", ": ")}{UpdateChecker.LatestVersionNumber}\n\n{i18N.Translate("Open release page now?")}", confirm: true) ==
+                DialogResult.OK)
+                OpenLatestReleasePage();
         }
+    }
+
+    private static void OpenLatestReleasePage()
+    {
+        var url = UpdateChecker.LatestRelease?.html_url;
+        if (string.IsNullOrWhiteSpace(url))
+            url = $"https://github.com/{UpdateChecker.Owner}/{UpdateChecker.Repo}/releases";
+
+        Utils.Utils.Open(url);
     }
 
     #endregion
