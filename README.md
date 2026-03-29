@@ -25,8 +25,6 @@
 
 当前代码已包含以下协议/节点类型支持：
 
-- Shadowsocks
-- ShadowsocksR
 - SOCKS5
 - SSH
 - Trojan
@@ -104,8 +102,6 @@
 
 The current codebase includes support for the following protocols and node types:
 
-- Shadowsocks
-- ShadowsocksR
 - SOCKS5
 - SSH
 - Trojan
