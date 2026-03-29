@@ -8,6 +8,8 @@ Updates:
 - Adjusted packaging for runtime dependencies and resource files
 - Improved the directory layout for test builds and release builds to make local debugging and distribution easier
 - Updated public-facing project information and related links
+- Refined the update check experience so new releases open the GitHub release page directly
+- Improved local Git sync scripts to better handle remote updates and common sync decisions
 
 Improvements:
 - Better protocol compatibility and maintainability under the new architecture
@@ -16,6 +18,7 @@ Improvements:
 - Removed background download and in-place automatic update flow to make updating more predictable
 - Synchronized assembly version, file version, and informational version metadata to improve release artifact identification
 - Improved icon recognition consistency after building and publishing
+- Improved batch script compatibility and stability on Windows cmd environments
 
 Special thanks to the original Netch author and all contributors.
 
@@ -29,6 +32,8 @@ Special thanks to the original Netch author and all contributors.
 - 调整部分运行时依赖与资源文件的打包方式
 - 优化测试版与发布版的目录结构，便于本地调试和正式分发
 - 同步更新项目对外信息与相关链接
+- 优化更新检查体验，检测到新版本后直接打开 GitHub Release 页面
+- 改进本地 Git 同步脚本，对远端更新和常见同步决策提供更完整处理
 
 改进说明：
 - 提升新版架构下的协议兼容性与后续维护性
@@ -37,5 +42,6 @@ Special thanks to the original Netch author and all contributors.
 - 移除了后台下载、自动替换和自动重启的更新流程，使更新行为更直接、更稳定
 - 同步程序集版本、文件版本和说明版本，提升发布产物的识别一致性
 - 改善编译和发布后图标识别的稳定性
+- 提升 Windows cmd 环境下批处理脚本的兼容性与稳定性
 
 感谢原始 Netch 项目作者及所有贡献者。
