@@ -1,4 +1,18 @@
-中文
+This release focuses on the migration and integration of Netch-Next to the sing-box core.
+
+Updates:
+- Switched the main proxy core to sing-box
+- Improved multi-protocol node configuration generation and startup flow
+- Enhanced support for VLESS, VMess, Trojan, TUIC, Hysteria2, WireGuard, and related protocols
+- Adjusted packaging for runtime dependencies and resource files
+- Improved the directory layout for test builds and release builds to make local debugging and distribution easier
+- Updated public-facing project information and related links
+
+Improvements:
+- Better protocol compatibility and maintainability under the new architecture
+- Laid the groundwork for further improvements to subscription parsing, mode control, and release workflow
+
+Special thanks to the original Netch author and all contributors.
 
 本次版本重点完成了 Netch-Next 向 sing-box 内核的更新与整合。
 
@@ -16,20 +30,3 @@
 
 感谢原始 Netch 项目作者及所有贡献者。
 
-English
-
-This release focuses on the migration and integration of Netch-Next to the sing-box core.
-
-Updates:
-- Switched the main proxy core to sing-box
-- Improved multi-protocol node configuration generation and startup flow
-- Enhanced support for VLESS, VMess, Trojan, TUIC, Hysteria2, WireGuard, and related protocols
-- Adjusted packaging for runtime dependencies and resource files
-- Improved the directory layout for test builds and release builds to make local debugging and distribution easier
-- Updated public-facing project information and related links
-
-Improvements:
-- Better protocol compatibility and maintainability under the new architecture
-- Laid the groundwork for further improvements to subscription parsing, mode control, and release workflow
-
-Special thanks to the original Netch author and all contributors.
