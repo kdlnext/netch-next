@@ -43,10 +43,6 @@ The current codebase includes support for the following protocols and node types
 
 - Current application version: `2.0.2`
 - Target framework: `net8.0-windows`
-- Main test directory: `E:\Projects\netch\Netch\bin\Debug\`
-- Quick test launch: `启动测试版.bat`
-- Windows x64 release build: `编译release.bat`
-- Full release packaging flow with zip and release notes: `发布release.bat`
 
 ### Release Packaging
 
@@ -120,10 +116,6 @@ Upstream project:
 
 - 当前主程序版本：`2.0.2`
 - 目标框架：`net8.0-windows`
-- 主要测试目录：`E:\Projects\netch\Netch\bin\Debug\`
-- 快速测试可使用仓库根目录下的 `启动测试版.bat`
-- Windows x64 发布构建可使用 `编译release.bat`
-- 带压缩包与发布说明的发布流程可使用 `发布release.bat`
 
 ### 发布说明
 
