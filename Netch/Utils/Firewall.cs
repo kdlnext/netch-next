@@ -6,12 +6,16 @@ namespace Netch.Utils;
 public static class Firewall
 {
     private const string Netch = "Netch-Next";
+    private static int _rulesInitialized;
 
     /// <summary>
     ///     Netch 自带程序添加防火墙
     /// </summary>
     public static void AddNetchFwRules()
     {
+        if (Interlocked.Exchange(ref _rulesInitialized, 1) == 1)
+            return;
+
         if (!FirewallWAS.IsLocallySupported)
         {
             Log.Warning("Windows Firewall Locally Unsupported");
@@ -34,6 +38,7 @@ public static class Firewall
         }
         catch (Exception e)
         {
+            Interlocked.Exchange(ref _rulesInitialized, 0);
             Log.Warning(e, "Create Netch Firewall rules error");
         }
     }
@@ -43,6 +48,8 @@ public static class Firewall
     /// </summary>
     public static void RemoveNetchFwRules()
     {
+        Interlocked.Exchange(ref _rulesInitialized, 0);
+
         if (!FirewallWAS.IsLocallySupported)
             return;
 

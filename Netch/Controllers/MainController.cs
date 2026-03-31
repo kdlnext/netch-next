@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.Threading;
 using Netch.Interfaces;
 using Netch.Models;
 using Netch.Models.Modes;
+using Netch.Models.Modes.ProcessMode;
 using Netch.Servers;
 using Netch.Services;
 using Netch.Utils;
@@ -40,6 +41,9 @@ public static class MainController
         Mode = mode;
 
         await Task.WhenAll(Task.Run(NativeMethods.RefreshDNSCache), Task.Run(Firewall.AddNetchFwRules));
+
+        if (mode is Redirector)
+            Log.Information("Process hijack traffic baseline: {Summary}", TrafficFlowAnalysis.GetProcessHijackStartupSummary());
 
         try
         {

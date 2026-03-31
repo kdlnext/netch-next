@@ -15,7 +15,7 @@ public partial class SettingForm : BindingForm
 
         #region General
 
-        BindTextBox<ushort>(Socks5PortTextBox, p => true, p => Global.Settings.Socks5LocalPort = p, Global.Settings.Socks5LocalPort);
+        BindTextBox<ushort>(Socks5PortTextBox, p => p > 0, p => Global.Settings.Socks5LocalPort = p, Global.Settings.Socks5LocalPort);
 
         BindCheckBox(AllowDevicesCheckBox,
             c => Global.Settings.LocalAddress = AllowDevicesCheckBox.Checked ? "0.0.0.0" : "127.0.0.1",

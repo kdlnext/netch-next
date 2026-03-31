@@ -1,7 +1,7 @@
-This release focuses on the migration and integration of Netch-Next to the sing-box core.
+This release focuses on the compatibility hardening and 2.1.1 refinement of Netch-Next on the sing-box core.
 
 Updates:
-- Updated application version to 2.0.2
+- Updated application version to 2.1.1
 - Switched the main proxy core to sing-box
 - Improved multi-protocol node configuration generation and startup flow
 - Enhanced support for VLESS, VMess, Trojan, TUIC, Hysteria2, WireGuard, and related protocols
@@ -10,6 +10,16 @@ Updates:
 - Updated public-facing project information and related links
 - Refined the update check experience so new releases open the GitHub release page directly
 - Improved local Git sync scripts to better handle remote updates and common sync decisions
+- Improved process-mode compatibility for launcher-style acceleration by enabling child-process capture in the default redirector settings
+- Improved process-mode rule validation so the editor validates current Handle and Bypass rules before reporting success
+- Improved sing-box host integration with the original configurable local Socks port model and structured inbound/route/dns generation
+- Added sing-box startup health checks while restoring the classic fixed local port workflow
+- Added 2026 traffic-shape assessment models for process-level hijack planning, covering TCP/UDP/QUIC/STUN/DTLS/DNS/BitTorrent-like/SRT/MASQUE-like/ECH/unknown UDP
+- Renamed the legacy V2Ray settings tab label to Singbox to match the current core and UI semantics
+- Added runtime startup diagnostics for process-hijack traffic handling so the new traffic assessment baseline is reflected in logs
+- Reduced repeated firewall rule initialization during repeated start/stop cycles in the same app session
+- Restored the classic local Socks port behavior: default 2801, configurable in settings, and no random sing-box listen port assignment
+- Tightened Socks local port setting validation and added explicit sing-box startup logs for the configured local endpoint
 
 Improvements:
 - Better protocol compatibility and maintainability under the new architecture
@@ -19,13 +29,19 @@ Improvements:
 - Synchronized assembly version, file version, and informational version metadata to improve release artifact identification
 - Improved icon recognition consistency after building and publishing
 - Improved batch script compatibility and stability on Windows cmd environments
+- Kept the original per-process acceleration model intact while tightening compatibility-oriented defaults and validation behavior
+- Improved local sing-box safety and recoverability without changing the current process-acceleration core path
+- Added a typed analysis foundation for future WinDivert flow handling and surfaced a conservative runtime summary for Windows developers
+- Reduced unnecessary repeated firewall-rule mutation while keeping the existing compatibility-oriented startup behavior
+- Restored port behavior consistency with legacy Netch so local proxy workflows, scripts, and user habits continue to work as expected
+- Improved regression visibility around fixed local port startup so Windows-side debugging can confirm the configured endpoint directly
 
 Special thanks to the original Netch author and all contributors.
 
-本次版本重点完成了 Netch-Next 向 sing-box 内核的更新与整合。
+本次版本重点是围绕 sing-box 内核下的兼容性补强与 Netch-Next 2.1.1 收口完善。
 
 更新内容：
-- 程序版本更新为 2.0.2
+- 程序版本更新为 2.1.1
 - 核心代理内核切换并统一为 sing-box
 - 优化多协议节点的配置生成与启动流程
 - 完善 VLESS、VMess、Trojan、TUIC、Hysteria2、WireGuard 等协议支持
@@ -34,6 +50,16 @@ Special thanks to the original Netch author and all contributors.
 - 同步更新项目对外信息与相关链接
 - 优化更新检查体验，检测到新版本后直接打开 GitHub Release 页面
 - 改进本地 Git 同步脚本，对远端更新和常见同步决策提供更完整处理
+- 调整进程模式默认行为，使按启动器/母进程选择时默认接管子进程，更贴近原始 Netch 的使用预期
+- 改进进程模式规则校验逻辑，校验当前编辑内容并同时覆盖 Handle 与 Bypass 规则
+- 优化 sing-box 宿主对接层，恢复为沿用原有本地 Socks 端口配置，并补全 inbound、route、dns 基础配置生成
+- 增加 sing-box 启动健康检查，并恢复经典固定端口工作流
+- 增加面向 2026 Windows 实际流量形态的流量评估模型，为后续进程级劫持覆盖 TCP、UDP、QUIC、STUN、DTLS、DNS、BitTorrent 类、SRT、MASQUE 类、ECH 影响流量与未知 UDP 提供代码基础
+- 将设置菜单中遗留的 V2Ray 顶部标签更名为 Singbox，使界面表述与当前内核保持一致
+- 为进程级劫持模式增加启动期流量基线摘要日志，让新增流量评估基础真正进入运行期可观测范围
+- 减少同一应用会话内重复初始化防火墙规则的次数，降低反复启动/停止时的额外系统改动
+- 恢复本地 Socks 端口的经典行为：默认 2801，并继续允许在设置中手动修改，不再为 sing-box 分配随机监听端口
+- 收紧本地 Socks 端口设置校验，并增加 sing-box 启动时对当前配置监听地址与端口的明确日志输出
 
 改进说明：
 - 提升新版架构下的协议兼容性与后续维护性
@@ -43,5 +69,11 @@ Special thanks to the original Netch author and all contributors.
 - 同步程序集版本、文件版本和说明版本，提升发布产物的识别一致性
 - 改善编译和发布后图标识别的稳定性
 - 提升 Windows cmd 环境下批处理脚本的兼容性与稳定性
+- 在不改动现有核心劫持链路的前提下，优先补强与原始 Netch 价值主张更一致的默认行为和调试体验
+- 在保持当前进程加速主链路不变的前提下，提升 sing-box 本地承接层的安全性、稳定性与可恢复性
+- 在不改变现有可用链路的前提下，为后续 WinDivert 进程级劫持层补充结构化流量分类与策略分析基础，并把关键摘要接入运行期日志
+- 在不推翻现有兼容行为的前提下，收敛重复的防火墙规则初始化动作，减少不必要的系统层重复变更
+- 恢复与原始 Netch 更一致的本地端口使用习惯，避免随机端口给调试、脚本联动和用户认知带来额外成本
+- 强化固定端口回归后的可观测性，便于在 Windows 环境中直接确认程序是否按设置监听指定端口
 
 感谢原始 Netch 项目作者及所有贡献者。

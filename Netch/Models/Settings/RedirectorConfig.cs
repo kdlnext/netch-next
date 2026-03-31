@@ -8,7 +8,10 @@ public class RedirectorConfig
 
     public bool FilterDNS { get; set; } = true;
 
-    public bool FilterParent { get; set; } = false;
+    // Keep launcher-style acceleration behavior closer to classic Netch:
+    // when the user selects a launcher/app process, child processes are
+    // captured by default unless explicitly disabled.
+    public bool FilterParent { get; set; } = true;
 
     public bool HandleOnlyDNS { get; set; } = true;
 

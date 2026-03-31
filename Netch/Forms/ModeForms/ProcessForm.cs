@@ -210,8 +210,18 @@ public partial class ProcessForm : BindingForm
 
     private void ValidationButton_Click(object sender, EventArgs e)
     {
-        if (!NFController.CheckRules(_mode.Bypass, out var results))
-            MessageBoxX.Show(NFController.GenerateInvalidRulesMessage(results), LogLevel.WARNING);
+        SaveBinds();
+
+        var invalidRules = new List<string>();
+
+        if (!NFController.CheckRules(_mode.Bypass, out var bypassResults))
+            invalidRules.AddRange(bypassResults.Select(rule => $"[Bypass] {rule}"));
+
+        if (!NFController.CheckRules(_mode.Handle, out var handleResults))
+            invalidRules.AddRange(handleResults.Select(rule => $"[Handle] {rule}"));
+
+        if (invalidRules.Any())
+            MessageBoxX.Show(NFController.GenerateInvalidRulesMessage(invalidRules), LogLevel.WARNING);
         else
             MessageBoxX.Show("Fine");
     }

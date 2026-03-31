@@ -5,27 +5,37 @@ namespace Netch.Servers;
 
 public static class SingboxConfigUtils
 {
-    public static async Task<object> GenerateClientConfigAsync(Server server)
+    public static async Task<object> GenerateClientConfigAsync(Server server, string localAddress, ushort localPort)
     {
         var inbound = new
         {
             type = "mixed",
             tag = "mixed-in",
-            listen = Global.Settings.LocalAddress,
-            listen_port = Global.Settings.Socks5LocalPort
+            listen = localAddress,
+            listen_port = localPort
         };
 
         var outbound = await TryGetOutboundAsync(server);
 
         return new
         {
-            log = new { level = "info" },
+            log = new { level = "info", timestamp = true },
             inbounds = new[] { inbound },
             outbounds = new object[]
             {
                 outbound,
                 new { type = "direct", tag = "direct" },
                 new { type = "block", tag = "block" }
+            },
+            route = new
+            {
+                auto_detect_interface = true,
+                final = "proxy"
+            },
+            dns = new
+            {
+                strategy = "prefer_ipv4",
+                independent_cache = true
             }
         };
     }
