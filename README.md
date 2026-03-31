@@ -41,7 +41,6 @@ The current codebase includes support for the following protocols and node types
 
 ### Development and Debugging
 
-- Current application version: `2.0.2`
 - Target framework: `net8.0-windows`
 
 ### Release Packaging
@@ -114,7 +113,6 @@ Upstream project:
 
 ### 开发与调试
 
-- 当前主程序版本：`2.0.2`
 - 目标框架：`net8.0-windows`
 
 ### 发布说明
