@@ -24,7 +24,7 @@ public class Setting
     /// <summary>
     ///     是否打开软件时检查 Sing-box 核心更新
     /// </summary>
-    public bool CheckSingboxUpdateWhenOpened { get; set; } = true;
+    public bool CheckSingboxUpdateWhenOpened { get; set; } = false;
 
     /// <summary>
     ///     是否打开软件时检查更新

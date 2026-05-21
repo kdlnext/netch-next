@@ -123,16 +123,81 @@ public partial class SettingForm : BindingForm
         BindCheckBox(XrayConeCheckBox, b => Global.Settings.CheckSingboxUpdateWhenOpened = b, Global.Settings.CheckSingboxUpdateWhenOpened);
         XrayConeCheckBox.Text = i18N.Translate("Auto Update Sing-box");
 
+        BindCheckBox(TLSAllowInsecureCheckBox, b => Global.Settings.SingboxConfig.AllowInsecure = b, Global.Settings.SingboxConfig.AllowInsecure);
+        BindCheckBox(TCPFastOpenBox, b => Global.Settings.SingboxConfig.TCPFastOpen = b, Global.Settings.SingboxConfig.TCPFastOpen);
+
         var checkSingboxBtn = new Button { Text = i18N.Translate("Manual Check Core Update"), AutoSize = true, Left = XrayConeCheckBox.Right + 20, Top = XrayConeCheckBox.Top };
         checkSingboxBtn.Click += async (_, _) => 
         {
             checkSingboxBtn.Enabled = false;
-            await Controllers.SingboxUpdateChecker.CheckAsync();
-            if (Controllers.SingboxUpdateChecker.LatestRelease != null)
-                MessageBoxX.Show($"Latest: {Controllers.SingboxUpdateChecker.LatestRelease.tag_name}\nURL: {Controllers.SingboxUpdateChecker.GetLatestDownloadUrl()}");
-            else
-                MessageBoxX.Show("Not found/Already latest.");
-            checkSingboxBtn.Enabled = true;
+            try
+            {
+                var checkTask = Controllers.SingboxUpdateChecker.CheckAsync();
+                var delayTask = Task.Delay(10000);
+                var completedTask = await Task.WhenAny(checkTask, delayTask);
+
+                if (completedTask == delayTask || Controllers.SingboxUpdateChecker.LatestRelease == null)
+                {
+                    ShowManualDownloadPrompt(true);
+                    return;
+                }
+
+                var latestTag = Controllers.SingboxUpdateChecker.LatestRelease.tag_name;
+                if (Controllers.SingboxUpdateChecker.IsNewVersionAvailable(latestTag))
+                {
+                    var msg = $"{i18N.Translate("New Sing-box version available")}: {latestTag}\n\n{i18N.Translate("Do you want to download and update now?")}";
+                    if (MessageBoxX.Show(msg, confirm: true) == DialogResult.OK)
+                    {
+                        var originalText = checkSingboxBtn.Text;
+                        checkSingboxBtn.Text = i18N.Translate("Updating...");
+                        
+                        var success = await Controllers.SingboxUpdateChecker.DownloadAndReplaceCoreAsync();
+                        if (success)
+                        {
+                            MessageBoxX.Show($"{i18N.Translate("Sing-box core updated successfully to")} {latestTag}");
+                            
+                            XrayConeCheckBox.Checked = false;
+                            Global.Settings.CheckSingboxUpdateWhenOpened = false;
+                            await Configuration.SaveAsync();
+                        }
+                        else
+                        {
+                            MessageBoxX.Show(i18N.Translate("Sing-box core update failed. Please try again."));
+                        }
+                        
+                        checkSingboxBtn.Text = originalText;
+                    }
+                }
+                else
+                {
+                    ShowManualDownloadPrompt(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Manual Sing-box update check failed");
+                ShowManualDownloadPrompt(true);
+            }
+            finally
+            {
+                checkSingboxBtn.Enabled = true;
+            }
+
+            void ShowManualDownloadPrompt(bool failed)
+            {
+                var titleKey = failed 
+                    ? "Update check timed out or failed. Would you like to manually download the latest version?" 
+                    : "Already using the latest Sing-box core. Would you like to manually download the latest version anyway?";
+                
+                var msg = $"{i18N.Translate(titleKey)}\n" +
+                          $"(URL: https://github.com/SagerNet/sing-box/releases/latest)\n\n" +
+                          $"{i18N.Translate("Instructions: Download the 'windows-amd64' zip package, extract it, and overwrite the 'sing-box.exe' inside Netch's 'bin' folder.")}";
+                
+                if (MessageBoxX.Show(msg, confirm: true) == DialogResult.OK)
+                {
+                    Utils.Utils.Open("https://github.com/SagerNet/sing-box/releases/latest");
+                }
+            }
         };
         XrayConeCheckBox.Parent.Controls.Add(checkSingboxBtn);
         #endregion

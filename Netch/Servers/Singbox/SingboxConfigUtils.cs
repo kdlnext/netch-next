@@ -102,7 +102,7 @@ public static class SingboxConfigUtils
                 {
                     tlsVless = new {
                         enabled = true,
-                        server_name = GetServerName(vless.ServerName, vless.Host),
+                        server_name = GetServerName(vless.ServerName, vless.Host, server.Hostname),
                         insecure = Global.Settings.SingboxConfig.AllowInsecure,
                         utls = new {
                             enabled = true,
@@ -117,7 +117,7 @@ public static class SingboxConfigUtils
                 }
                 else if (vless.TLSSecureType != "none")
                 {
-                    tlsVless = new { enabled = true, server_name = GetServerName(vless.ServerName, vless.Host), insecure = Global.Settings.SingboxConfig.AllowInsecure };
+                    tlsVless = new { enabled = true, server_name = GetServerName(vless.ServerName, vless.Host, server.Hostname), insecure = Global.Settings.SingboxConfig.AllowInsecure };
                 }
                 
                 return new
@@ -132,7 +132,7 @@ public static class SingboxConfigUtils
                     transport = GetTransport(vless.TransferProtocol, vless.Host, vless.Path)
                 };
             case VMessServer vmess:
-                var tlsVmess = vmess.TLSSecureType != "none" ? new { enabled = true, server_name = GetServerName(vmess.ServerName, vmess.Host), insecure = Global.Settings.SingboxConfig.AllowInsecure } : null;
+                var tlsVmess = vmess.TLSSecureType != "none" ? new { enabled = true, server_name = GetServerName(vmess.ServerName, vmess.Host, server.Hostname), insecure = Global.Settings.SingboxConfig.AllowInsecure } : null;
                 return new
                 {
                     type = "vmess",
@@ -153,7 +153,7 @@ public static class SingboxConfigUtils
                     server = address,
                     server_port = server.Port,
                     password = trojan.Password,
-                    tls = new { enabled = true, server_name = GetServerName(trojan.Host, null), insecure = Global.Settings.SingboxConfig.AllowInsecure }
+                    tls = new { enabled = true, server_name = GetServerName(trojan.Host, null, server.Hostname), insecure = Global.Settings.SingboxConfig.AllowInsecure }
                 };
             case WireGuardServer wg:
                 return new
@@ -194,10 +194,11 @@ public static class SingboxConfigUtils
         }
     }
 
-    private static string GetServerName(string? serverName, string? host)
+    private static string GetServerName(string? serverName, string? host, string? fallback = null)
     {
         if (!string.IsNullOrEmpty(serverName)) return serverName.Split(',')[0];
         if (!string.IsNullOrEmpty(host)) return host.Split(',')[0];
+        if (!string.IsNullOrEmpty(fallback)) return fallback;
         return "";
     }
 

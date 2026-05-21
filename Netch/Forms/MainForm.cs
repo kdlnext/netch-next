@@ -91,7 +91,7 @@ public partial class MainForm : Form
 
         // 检查 Sing-box 更新
         if (Global.Settings.CheckSingboxUpdateWhenOpened)
-            SingboxUpdateChecker.CheckAsync().Forget();
+            CheckSingboxUpdateAsync().Forget();
 
         // 检查订阅更新
         if (Global.Settings.UpdateServersWhenOpened)
@@ -1281,6 +1281,43 @@ public partial class MainForm : Form
             url = $"https://github.com/{UpdateChecker.Owner}/{UpdateChecker.Repo}/releases";
 
         Utils.Utils.Open(url);
+    }
+
+    private async Task CheckSingboxUpdateAsync()
+    {
+        try
+        {
+            SingboxUpdateChecker.NewVersionFound += OnSingboxNewVersionFound;
+            await SingboxUpdateChecker.CheckAsync();
+        }
+        finally
+        {
+            SingboxUpdateChecker.NewVersionFound -= OnSingboxNewVersionFound;
+        }
+
+        async void OnSingboxNewVersionFound(object? o, EventArgs? eventArgs)
+        {
+            if (SingboxUpdateChecker.LatestRelease == null)
+                return;
+
+            var latestTag = SingboxUpdateChecker.LatestRelease.tag_name;
+            if (SingboxUpdateChecker.IsNewVersionAvailable(latestTag))
+            {
+                NotifyTip(i18N.Translate("Downloading and updating Sing-box core..."));
+
+                var success = await SingboxUpdateChecker.DownloadAndReplaceCoreAsync();
+                if (success)
+                {
+                    NotifyTip($"{i18N.Translate("Sing-box core updated successfully to")} {latestTag}");
+                    Global.Settings.CheckSingboxUpdateWhenOpened = false;
+                    await Configuration.SaveAsync();
+                }
+                else
+                {
+                    NotifyTip(i18N.Translate("Sing-box core update failed. Please try again."));
+                }
+            }
+        }
     }
 
     #endregion

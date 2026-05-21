@@ -185,6 +185,7 @@
     "Language": "语言",
     "FullCone Support (Required Server Xray-core v1.3.0+)": "FullCone 支持（需服务端 Xray-core v1.3.0+）",
     "TCP FastOpen": "TCP 快速打开",
+    "TLS AllowInsecure": "TLS 允许不安全证书",
     "Disable Support Warning": "停用支持警告",
 
     "Profile": "配置名",
@@ -198,5 +199,19 @@
     "The {0} port is reserved by system.": "{0} 端口是系统保留端口",
 
     "{0} won't get developers' support, Please do not report any issues or seek help from developers.": "{0} 将不会得到开发者的支持，请不要报告任何问题或寻求开发人员的帮助。",
-    "No Support": "不受支持"
+    "No Support": "不受支持",
+
+    "Auto Update Sing-box": "自动更新 Sing-box",
+    "Manual Check Core Update": "手动检测内核更新",
+    "New Sing-box version available": "发现新的 Sing-box 内核版本",
+    "Do you want to download and update now?": "是否立即下载并更新？",
+    "Updating...": "正在更新...",
+    "Sing-box core updated successfully to": "Sing-box 内核已成功更新至",
+    "Sing-box core update failed. Please try again.": "Sing-box 内核更新失败，请重试。",
+    "Already using the latest Sing-box core": "已在使用最新的 Sing-box 内核",
+    "Check update failed": "检查更新失败",
+    "Downloading and updating Sing-box core...": "正在下载并更新 Sing-box 内核...",
+    "Update check timed out or failed. Would you like to manually download the latest version?": "检测更新超时或失败。是否尝试手动下载最新版本？",
+    "Already using the latest Sing-box core. Would you like to manually download the latest version anyway?": "已在使用最新的 Sing-box 内核。是否仍要尝试手动下载最新版本？",
+    "Instructions: Download the 'windows-amd64' zip package, extract it, and overwrite the 'sing-box.exe' inside Netch's 'bin' folder.": "提示：下载并解压【windows-amd64】版本的 zip 压缩包，然后将解压出的 sing-box.exe 文件覆盖替换到 Netch 运行目录下的 bin 文件夹中即可。"
 }
